@@ -1,0 +1,71 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Analysis with CodeQL and Maven Build
+
+on:
+  #push:
+  #  branches: [ main ]
+  push:
+    branches:
+      - 'feature/*'
+      - 'chore/*'
+
+jobs:
+  codeql-analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
+
+    # Specify the container in which actions will run
+    #container:
+    #  image: codeql-container:f0f91db
+    #  credentials:
+    #    username: ${{ github.repository_owner }}
+    #    password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+        
+      # Autobuild attempts to build any compiled languages (C/C++, C#, Go, or Java).
+      # If this step fails, then you should remove it and run the build manually (see below).
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+      #- name: codeQL Report
+      #  uses: awshole/codeql-report@v1
+      #  with:
+      #    github_issue_assignee: 'jingood2'
+      #    codeql_github_integration_token: ${{ secrets.GITHUB_TOKEN }}
+      #    github_repository: 'jingood2/petclinic'
+  #build:
+  #  needs: codeql-analysis
+  #  runs-on: ubuntu-latest
+  #  strategy:
+  #    matrix:
+  #      java: [ '8', '11', '17' ]
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Set up JDK ${{matrix.java}}
+#        uses: actions/setup-java@v2
+#        with:
+#          java-version: ${{matrix.java}}
+#          distribution: 'adopt'
+#          cache: maven
+#      - name: Build with Maven Wrapper
+#        run: ./mvnw -B package
