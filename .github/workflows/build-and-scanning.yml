@@ -1,11 +1,8 @@
 name: Docker Build and Image Scanning
 
 on:
-  push:
-    branches:
-    - main
   pull_request:
-    types: [opened, reopened, labeled, synchronize]
+    types: [reopened, labeled, synchronize]
 
 permissions: write-all
 
