@@ -64,10 +64,6 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git remote -v 
-          # emote: Permission to jingood2/petclinic-demo-gitops.git denied to github-actions[bot] error
-          git remote add origin ${{ inputs.GITOPS_REPO }}
-          git add .
-          git commit -m "Update image version"
           
       - name: Push changes
         uses: ad-m/github-push-action@master
