@@ -39,6 +39,8 @@ jobs:
           repository: ${{ inputs.GITOPS_REPO }}
           token: ${{ secrets.GITHUB_TOKEN}}
           ref: ${{ inputs.BRANCH }}
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Update dev manifest
         #if: ${{ github.event_name == 'push' &&
@@ -62,5 +64,12 @@ jobs:
           git config user.email github-actions@github.com
           git add .
           git commit -m "Update image version"
-          git push
           
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ inputs.BRANCH }}
+      - uses: fastify/github-action-merge-dependabot@v2.1.1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
