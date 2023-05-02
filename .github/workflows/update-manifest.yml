@@ -1,4 +1,4 @@
-name: Docker Build and Image Scanning
+name: Update Manifest
 
 on:
   workflow_call:
