@@ -30,6 +30,7 @@ permissions: write-all
 jobs:
   update-manifest:
     runs-on: ubuntu-latest
+    permissions: write-all
     env:
       DOCKER_IMAGE: ${{inputs.DOCKER_IMAGE_REPO}}:${{ github.sha }}
     steps:
