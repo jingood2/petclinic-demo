@@ -52,7 +52,6 @@ jobs:
           IMAGE_NAME: ${{ env.DOCKER_IMAGE }}
           ENV: ${{ inputs.ENVIRONMENT }}
         run: |
-          ls -la
           cd $K8S_YAML_DIR/overlays/$ENV
           curl -s -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
           chmod u+x ./kustomize
