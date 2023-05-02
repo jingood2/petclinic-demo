@@ -34,13 +34,11 @@ jobs:
       DOCKER_IMAGE: ${{inputs.DOCKER_IMAGE_REPO}}:${{ github.sha }}
     steps:
       - name: Checkout manifest repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: ${{ inputs.GITOPS_REPO }}
           token: ${{ secrets.GITHUB_TOKEN}}
           ref: ${{ inputs.BRANCH }}
-          persist-credentials: false
-          fetch-depth: 0
 
       - name: Update dev manifest
         #if: ${{ github.event_name == 'push' &&
