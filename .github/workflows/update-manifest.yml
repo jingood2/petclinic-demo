@@ -37,22 +37,30 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: ${{ inputs.GITOPS_REPO }}
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN}}
           ref: ${{ inputs.BRANCH }}
 
       - name: Update dev manifest
-        if: ${{ github.event_name == 'push' &&
-          contains('
-          refs/heads/development
-          ', github.ref)}}
+        #if: ${{ github.event_name == 'push' &&
+        #  contains('
+        #  refs/heads/main
+        #  ', github.ref)}}
         env:
           K8S_YAML_DIR: ${{ inputs.K8S_YAML_DIR }}
           IMAGE_NAME: ${{ env.DOCKER_IMAGE }}
-          ENV: ${{ inputs.environment }}
+          ENV: ${{ inputs.ENVIRONMENT }}
         run: |
           ls -la
           cd $K8S_YAML_DIR/overlays/$ENV
           curl -s -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
           chmod u+x ./kustomize
           ./kustomize edit set image MYAPP-IMAGE=$IMAGE_NAME
+      
+      - name: Push the changes to git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Update image version"
+          git push
           
