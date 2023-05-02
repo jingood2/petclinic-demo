@@ -68,6 +68,7 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
+          repository: ${{ inputs.GITOPS_REPO }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ inputs.BRANCH }}
       - uses: fastify/github-action-merge-dependabot@v2.1.1
