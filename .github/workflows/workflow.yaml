@@ -18,7 +18,7 @@ jobs:
     needs: [ci]
     permissions:
       id-token: write  # need this for OIDC
-      contents: read   # This is required for actions/checkout
+      contents: write # This is required for actions/checkout
     uses: ./.github/workflows/update-manifest.yml
     with:
       DOCKER_IMAGE_REPO: 'docker.io/jingood2/petclinic-demo' 
