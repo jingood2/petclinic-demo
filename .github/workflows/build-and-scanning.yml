@@ -105,7 +105,7 @@ jobs:
       - name: Run Trivy SBOM analysis
         uses: docker://aquasec/trivy:latest
         with:
-          args: sbom --format cycyclonedx sbom.xml 
+          args: sbom --format cyclonedx sbom.xml 
 
       - name: Upload SBOM to artifact storage
         uses: actions/upload-artifact@v1
