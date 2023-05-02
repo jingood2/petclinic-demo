@@ -25,11 +25,15 @@ on:
         default: 'dev'
 
 
-permissions: write-all
+#permissions: write-all
 
 jobs:
   update-manifest:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+      repository-projects: write
     env:
       DOCKER_IMAGE: ${{inputs.DOCKER_IMAGE_REPO}}:${{ github.sha }}
     steps:
