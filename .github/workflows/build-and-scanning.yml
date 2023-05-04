@@ -108,7 +108,7 @@ jobs:
           args: image --format cyclonedx --output result.json ${{ env.DOCKER_IMAGE }}
 
       - name: Upload SBOM to artifact storage
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: trivy-sbom
           path: result.json
