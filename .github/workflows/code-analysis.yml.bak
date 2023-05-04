@@ -1,15 +1,10 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Analysis with CodeQL and Maven Build
+name: Static Code Analysis with CodeQL
 
 on:
-  #push:
-  #  branches: [ main ]
-  push:
-    branches:
-      - 'feature/*'
-      - 'chore/*'
+  pull_request:
 
 jobs:
   codeql-analysis:
@@ -45,6 +40,8 @@ jobs:
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
+
+      # ToDo: Slack Notification
 
       #- name: codeQL Report
       #  uses: awshole/codeql-report@v1

@@ -1,0 +1,80 @@
+name: Update Manifest
+
+on:
+  workflow_call:
+    inputs:
+      DOCKER_IMAGE_REPO:
+        required: false
+        type: string
+        default: 'docker.io/jingood2/petclinic-demo'
+      GITOPS_REPO:
+        required: false
+        type: string
+        default: 'jingood2/petclinic-demo-gitops'
+      K8S_YAML_DIR:
+        required: false
+        type: string
+        default: './apps/petclinic-demo'
+      BRANCH:
+        required: false
+        type: string
+        default: 'main'
+      ENVIRONMENT:
+        required: false
+        type: string
+        default: 'dev'
+
+
+permissions: write-all
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+      repository-projects: write
+    env:
+      DOCKER_IMAGE: ${{inputs.DOCKER_IMAGE_REPO}}:${{ github.sha }}
+    steps:
+      - name: Checkout manifest repo
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.GITOPS_REPO }}
+          persist-credentials: false
+          fetch-depth: 0
+          #token: ${{ secrets.GITHUB_TOKEN}}
+          #ref: ${{ inputs.BRANCH }}
+
+      - name: Update dev manifest
+        #if: ${{ github.event_name == 'push' &&
+        #  contains('
+        #  refs/heads/main
+        #  ', github.ref)}}
+        env:
+          K8S_YAML_DIR: ${{ inputs.K8S_YAML_DIR }}
+          IMAGE_NAME: ${{ env.DOCKER_IMAGE }}
+          ENV: ${{ inputs.ENVIRONMENT }}
+        run: |
+          cd $K8S_YAML_DIR/overlays/$ENV
+          curl -s -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+          chmod u+x ./kustomize
+          ./kustomize edit set image MYAPP-IMAGE=$IMAGE_NAME
+      
+      - name: Push the changes to git
+        run: |
+          git config --local user.name github-actions
+          git config --local user.email github-actions@github.com
+          git commit -a -m "Add changes"
+          
+      # Note: if you push on public repository, you should use PAT
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          repository: ${{ inputs.GITOPS_REPO }}
+          force: true
+          github_token: ${{ secrets.GITOPS_PUSH_TOKEN }}
+          branch: ${{ inputs.BRANCH }}
+      - uses: fastify/github-action-merge-dependabot@v2.1.1
+        with:
+          github-token: ${{ secrets.GITOPS_PUSH_TOKEN }}

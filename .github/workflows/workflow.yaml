@@ -1,0 +1,55 @@
+name: "CI Pipeline"
+
+on:
+  #push:
+  #  branches: [ main ]
+  pull_request:
+
+permissions:
+  id-token: write
+  contents: write
+  actions: write
+  checks: write
+  deployments: write
+  discussions: write
+  issues: write
+  pages: write
+  packages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
+
+jobs:
+  ci:
+    uses: ./.github/workflows/build-and-scanning.yml
+    with:
+      docker-image: 'docker.io/jingood2/petclinic-demo'
+    secrets: inherit
+
+  dev-cd:
+    needs: [ci]
+    uses: ./.github/workflows/update-manifest.yml
+    with:
+      DOCKER_IMAGE_REPO: 'jingood2/petclinic-demo' 
+      GITOPS_REPO: 'jingood2/petclinic-demo-gitops'
+      K8S_YAML_DIR: './apps/petclinic-demo'
+      BRANCH: 'main'
+      ENVIRONMENT: 'dev'
+    secrets: inherit
+  
+  #approval:
+
+  #prod-cd:
+  #  needs: [dev-cd,approval]
+  #  permissions:
+  #    id-token: write  # need this for OIDC
+  #    contents: read   # This is required for actions/checkout
+  #  uses: ./.github/workflows/update-manifest.yml
+  #  with:
+  #    DOCKER_IMAGE_REPO: 'docker.io/jingood2/petclinic-demo' 
+  #    GITOPS_REPO: 'jingood2/petclinic-demo-gitops'
+  #    K8S_YAML_DIR: './apps/petclinic-demo'
+  #    BRANCH: 'main'
+  #    ENVIRONMENT: 'prod'
+  #  secrets: inherit
