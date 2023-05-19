@@ -10,7 +10,7 @@ on:
       GITOPS_REPO:
         required: false
         type: string
-        default: 'jingood2/petclinic-demo-gitops'
+        default: 'jingood2/petclinic-multi-env-apps-gitops'
       K8S_YAML_DIR:
         required: false
         type: string
