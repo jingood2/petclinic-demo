@@ -41,8 +41,6 @@ jobs:
       matrix:
         language: [ 'java' ]
 
-   
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -56,9 +54,25 @@ jobs:
       # If this step fails, then you should remove it and run the build manually (see below).
       - name: Autobuild
         uses: github/codeql-action/autobuild@v2
+      
+      #- name: Set up JDK 17
+      #  uses: actions/setup-java@v2
+      #  with:
+      #    java-version: 17
+      #    distribution: 'adopt'
+      #    cache: maven
+      #- name: Build with Maven Wrapper
+      #  run: ./mvnw -B package
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
+
+      - name: codeQL Report
+        uses: awshole/codeql-report@v1
+        with:
+          github_issue_assignee: '@jingood2'
+          codeql_github_integration_token: ${{ secrets.GITHUB_TOKEN }}
+          github_repository: 'jingood2/petclinic-demo'
 
   build-and-push:
     runs-on: ubuntu-latest
