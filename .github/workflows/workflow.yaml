@@ -21,7 +21,7 @@ jobs:
       DOCKER_IMAGE_REPO: 'jingood2/petclinic-demo' 
       GITOPS_REPO: 'jingood2/petclinic-multi-env-apps-gitops'
       K8S_YAML_DIR: './apps/petclinic-demo'
-      BRANCH: 'chore/multi-env-deployment'
+      BRANCH: 'main'
       ENVIRONMENT: 'dev/app1'
     secrets: inherit
   
@@ -32,7 +32,7 @@ jobs:
       DOCKER_IMAGE_REPO: 'jingood2/petclinic-demo' 
       GITOPS_REPO: 'jingood2/petclinic-multi-env-apps-gitops'
       K8S_YAML_DIR: './apps/petclinic-demo'
-      BRANCH: 'chore/multi-env-deployment'
+      BRANCH: 'main'
       ENVIRONMENT: 'dev/app2'
     secrets: inherit
   
@@ -43,7 +43,7 @@ jobs:
       DOCKER_IMAGE_REPO: 'jingood2/petclinic-demo' 
       GITOPS_REPO: 'jingood2/petclinic-multi-env-apps-gitops'
       K8S_YAML_DIR: './apps/petclinic-demo'
-      BRANCH: 'chore/multi-env-deployment'
+      BRANCH: 'main'
       ENVIRONMENT: 'dev/app3'
     secrets: inherit
   
