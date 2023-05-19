@@ -14,15 +14,37 @@ jobs:
       docker-image: 'docker.io/jingood2/petclinic-demo'
     secrets: inherit
 
-  dev-cd:
+  dev-app1-cd:
     needs: [ci]
     uses: ./.github/workflows/update-manifest.yml
     with:
       DOCKER_IMAGE_REPO: 'jingood2/petclinic-demo' 
-      GITOPS_REPO: 'jingood2/petclinic-demo-gitops'
+      GITOPS_REPO: 'jingood2/petclinic-multi-env-apps-gitops'
       K8S_YAML_DIR: './apps/petclinic-demo'
       BRANCH: 'main'
-      ENVIRONMENT: 'dev'
+      ENVIRONMENT: 'dev/app1'
+    secrets: inherit
+  
+  dev-app2-cd:
+    needs: [ci]
+    uses: ./.github/workflows/update-manifest.yml
+    with:
+      DOCKER_IMAGE_REPO: 'jingood2/petclinic-demo' 
+      GITOPS_REPO: 'jingood2/petclinic-multi-env-apps-gitops'
+      K8S_YAML_DIR: './apps/petclinic-demo'
+      BRANCH: 'main'
+      ENVIRONMENT: 'dev/app2'
+    secrets: inherit
+  
+  dev-app3-cd:
+    needs: [ci]
+    uses: ./.github/workflows/update-manifest.yml
+    with:
+      DOCKER_IMAGE_REPO: 'jingood2/petclinic-demo' 
+      GITOPS_REPO: 'jingood2/petclinic-multi-env-apps-gitops'
+      K8S_YAML_DIR: './apps/petclinic-demo'
+      BRANCH: 'main'
+      ENVIRONMENT: 'dev/app3'
     secrets: inherit
   
   #approval:
